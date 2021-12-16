@@ -68,24 +68,25 @@ const LoginForm = () =>{
                         if(res.data === '') alert("invalid login");
                         else{
                             console.log(res);
-                            setAccount(res);
+                            //setAccount(res);
                             alert("Successfully logged in!");
+                            const user = {
+                              f_name : res.data.f_name,
+                              l_name : res.data.l_name,
+                              e_mail : res.data.e_mail,
+                              image : "https://icon-library.com/images/no-user-image-icon/no-user-image-icon-7.jpg"
+                            }
+                            console.log(user);
+                            setAccount(user);
+                            setOpenLogin(false);
+                            setOpenSignup(false);
                         }
                 })
                 .catch((err) => console.log(err))
             }catch(e){
                 console.log("error : ",e);
             }
-            const user = {
-              f_name : "aaa",
-              l_name : "bbb",
-              e_mail : "ccc",
-              password: "ddd",
-              image : "https://icon-library.com/images/no-user-image-icon/no-user-image-icon-7.jpg"
-            }
-            setAccount(user);
-            setOpenLogin(false);
-            setOpenSignup(false);
+
         };
     return (
       <div className="wrapper" style={{height:'auto',overflow:'hidden'}}>

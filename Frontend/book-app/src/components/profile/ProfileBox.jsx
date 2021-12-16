@@ -1,6 +1,7 @@
 import React, { useState ,useContext} from 'react'
 import { AccountContext } from '../context/AccountProvider';
 import {FunctionsContext} from '../context/FunctionsProvider';
+import axios from 'axios'
 import './style3.css';
 
 const ProfileBox = () => {
@@ -63,10 +64,14 @@ const ProfileBox = () => {
             alert("No changes made");
             return;
           }
-          alert("Update successfull!");
+          // alert("Update successfull!");
           setEdit(false);
           return true;
       }
+
+
+
+
       if(password.length === 0 || firstName.length === 0){
           alert("First Name and Password must not be empty!");
           return;
@@ -86,7 +91,20 @@ const ProfileBox = () => {
       alert("Update successfull!");
       setEdit(false);
     }
-
+    const  handleUpdate= async () =>{
+        const user={
+            f_name:firstName,
+            l_name:lastName,
+            e_mail:account.e_mail
+        }
+        console.log(user);
+        await axios.post('http://localhost:3002/updateUserData',user)
+        .then((res) =>{
+            if(res.data === '') alert("Update not possible")
+            else alert("Updated Successfully")
+        })
+        .catch((err) => console.log(err));
+    }
     const handleLogout = () =>{
       setAccount(null);
       setProfile(false);
@@ -97,10 +115,11 @@ const ProfileBox = () => {
       setOpenSignup(false);
       setOpenLogin(false);
     }
+    console.log(account);
     return (
       <div className="wrapper" style={{overflow:'hidden'}}>
         <div className = "form" style={{width:'90%'}} noValidate>
-            <div className="firstName"> 
+            <div className="firstName">
               <label htmlFor="firstName" style={{color:'#fff',paddingRight:'10px'}}>First Name</label>
                 {<input
                 type="text"
@@ -120,29 +139,20 @@ const ProfileBox = () => {
                 defaultValue={account.l_name}
               />
             </div>
-            <div className="password">
-              <label htmlFor="password" style={{color:'#fff',paddingRight:'10px',paddingLeft:'7px'}}>Password</label>
-              <input
-                type="password"
-                name="password"
-                onChange={handleChange}
-                disabled = {edit ? "" : "disabled"}
-                defaultValue={account.password}
-                style={{marginLeft:'10px'}}
-              />
-            </div>
+
             {
-            edit ? 
-          <>
-          <input type="file" name="myImage" onChange={(e) => setImage(URL.createObjectURL(e.target.files[0]))}/>
-          <div className="submit" onClick={handleSubmit} style={{paddingUp:'10px'}}>
-            <button style={{backgroundColor:'#22223B'}}>Update</button>
-          </div>
-          </>
-          : 
-          <div className="submit">
-          <button onClick={handleEdit} style={{backgroundColor:'#22223B'}}>Edit Profile</button>
-           </div>
+            edit ?
+              <>
+
+              <div className="submit" onClick={handleSubmit} style={{paddingUp:'10px'}}>
+                <button style={{backgroundColor:'#22223B'}} onClick={handleUpdate}>Update</button>
+
+              </div>
+              </>
+          :
+              <div className="submit">
+              <button onClick={handleEdit} style={{backgroundColor:'#22223B'}}>Edit Profile</button>
+               </div>
           }
           <div className="submit">
         <button onClick = {handleLogout} style={{bottom:'auto',backgroundColor:'#22223B'}}>Logout</button>

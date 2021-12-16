@@ -17,11 +17,11 @@ var updateStatusRoutes = require('./routes/updateStatus');
 app.use('/login',loginRoutes);
 app.use('/signup',signupRoutes);
 app.use('/searchbook',searchBookRoutes);
-app.use('./update',updateUserDataRoutes);
-app.use('./bookdetails',bookDetailsRoutes);
-app.use('./rating',ratingRoutes);
-app.use('./status',fetchByStatusRoutes);
-app.use('./updatestatus',updateStatusRoutes);
+app.use('/updateUserData',updateUserDataRoutes);
+app.use('/bookdetails',bookDetailsRoutes);
+app.use('/rating',ratingRoutes);
+app.use('/status',fetchByStatusRoutes);
+app.use('/updatestatus',updateStatusRoutes);
 
 app.listen(3002,() =>{
     console.log("Server started on port 3002");
